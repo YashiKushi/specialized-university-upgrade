@@ -130,7 +130,13 @@ const CourseGrid = () => {
                   </div>
                 </div>
 
-                <Button className="w-full bg-purple-600 hover:bg-purple-700">
+                <Button
+                  className="w-full bg-purple-600 hover:bg-purple-700"
+                  onClick={() => {
+                    const testSection = document.getElementById("tests");
+                    testSection?.scrollIntoView({ behavior: "smooth" });
+                  }}
+                >
                   Начать курс
                 </Button>
               </CardContent>
