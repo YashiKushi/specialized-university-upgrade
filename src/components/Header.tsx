@@ -34,12 +34,7 @@ const Header = () => {
         </nav>
 
         <div className="flex items-center space-x-3">
-          <Button variant="ghost" size="sm">
-            Войти
-          </Button>
-          <Button size="sm" className="bg-purple-600 hover:bg-purple-700">
-            Регистрация
-          </Button>
+          {/* Кнопки авторизации убраны */}
         </div>
       </div>
     </header>

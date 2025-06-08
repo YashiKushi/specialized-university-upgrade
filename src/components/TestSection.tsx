@@ -13,12 +13,14 @@ import { Progress } from "@/components/ui/progress";
 import Icon from "@/components/ui/icon";
 
 const testQuestions = [
+  // JavaScript
   {
     id: 1,
     question:
       "Что выведет следующий код JavaScript?\n```\nconsole.log(typeof null);\n```",
     options: ["null", "undefined", "object", "error"],
     correct: 2,
+    category: "JavaScript",
   },
   {
     id: 2,
@@ -26,6 +28,7 @@ const testQuestions = [
       "Какой из следующих методов используется для добавления элемента в конец массива?",
     options: ["push()", "pop()", "shift()", "unshift()"],
     correct: 0,
+    category: "JavaScript",
   },
   {
     id: 3,
@@ -37,6 +40,133 @@ const testQuestions = [
       "Способ создания классов",
     ],
     correct: 1,
+    category: "JavaScript",
+  },
+  {
+    id: 4,
+    question: "Что такое hoisting в JavaScript?",
+    options: [
+      "Перемещение объявлений переменных и функций в начало области видимости",
+      "Создание копии объекта",
+      "Удаление элементов из массива",
+      "Сортировка массива",
+    ],
+    correct: 0,
+    category: "JavaScript",
+  },
+  // Python
+  {
+    id: 5,
+    question: "Что выведет этот код Python?\n```\nprint([1, 2, 3] * 2)\n```",
+    options: ["[1, 2, 3, 1, 2, 3]", "[2, 4, 6]", "error", "[1, 2, 3]"],
+    correct: 0,
+    category: "Python",
+  },
+  {
+    id: 6,
+    question: "Какой тип данных НЕ является изменяемым в Python?",
+    options: ["list", "dict", "set", "tuple"],
+    correct: 3,
+    category: "Python",
+  },
+  {
+    id: 7,
+    question: "Что делает метод range(1, 10, 2) в Python?",
+    options: [
+      "Создает список [1, 3, 5, 7, 9]",
+      "Создает список [1, 2, 3, 4, 5, 6, 7, 8, 9]",
+      "Создает список [2, 4, 6, 8, 10]",
+      "Выдает ошибку",
+    ],
+    correct: 0,
+    category: "Python",
+  },
+  // React
+  {
+    id: 8,
+    question: "Для чего используется useEffect в React?",
+    options: [
+      "Для управления состоянием компонента",
+      "Для выполнения побочных эффектов",
+      "Для создания контекста",
+      "Для оптимизации рендеринга",
+    ],
+    correct: 1,
+    category: "React",
+  },
+  {
+    id: 9,
+    question: "Что такое JSX в React?",
+    options: [
+      "JavaScript XML - синтаксическое расширение для JavaScript",
+      "Новый язык программирования",
+      "Библиотека для работы с DOM",
+      "Фреймворк для CSS",
+    ],
+    correct: 0,
+    category: "React",
+  },
+  {
+    id: 10,
+    question:
+      "Какой хук используется для управления состоянием в функциональных компонентах?",
+    options: ["useEffect", "useState", "useContext", "useCallback"],
+    correct: 1,
+    category: "React",
+  },
+  // Алгоритмы
+  {
+    id: 11,
+    question: "Какова временная сложность бинарного поиска?",
+    options: ["O(n)", "O(log n)", "O(n²)", "O(1)"],
+    correct: 1,
+    category: "Алгоритмы",
+  },
+  {
+    id: 12,
+    question: "Что такое рекурсия в программировании?",
+    options: [
+      "Функция, которая вызывает саму себя",
+      "Цикл for",
+      "Условная конструкция",
+      "Способ объявления переменных",
+    ],
+    correct: 0,
+    category: "Алгоритмы",
+  },
+  // Структуры данных
+  {
+    id: 13,
+    question:
+      "Какая структура данных работает по принципу LIFO (Last In, First Out)?",
+    options: ["Queue", "Stack", "Array", "Tree"],
+    correct: 1,
+    category: "Структуры данных",
+  },
+  {
+    id: 14,
+    question: "В чем основное преимущество хеш-таблицы?",
+    options: [
+      "Быстрый поиск O(1) в среднем случае",
+      "Сортированное хранение данных",
+      "Минимальное использование памяти",
+      "Простота реализации",
+    ],
+    correct: 0,
+    category: "Структуры данных",
+  },
+  // Дополнительные вопросы
+  {
+    id: 15,
+    question: "Что означает аббревиатура API?",
+    options: [
+      "Application Programming Interface",
+      "Advanced Programming Integration",
+      "Automated Program Instruction",
+      "Application Process Interface",
+    ],
+    correct: 0,
+    category: "Общие знания",
   },
 ];
 
@@ -142,7 +272,9 @@ const TestSection = () => {
                 <CardTitle className="text-lg">
                   Вопрос {currentQuestion + 1} из {testQuestions.length}
                 </CardTitle>
-                <div className="text-sm text-gray-500">JavaScript Basic</div>
+                <div className="text-sm text-gray-500">
+                  {testQuestions[currentQuestion].category}
+                </div>
               </div>
               <Progress
                 value={((currentQuestion + 1) / testQuestions.length) * 100}
