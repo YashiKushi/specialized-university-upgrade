@@ -13,6 +13,14 @@ import JavaScriptTest from "./tests/JavaScriptTest";
 import ReactTest from "./tests/ReactTest";
 import NodeTest from "./tests/NodeTest";
 
+interface TestSelectorProps {
+  onTestComplete: (
+    testId: string,
+    score: number,
+    totalQuestions: number,
+  ) => void;
+}
+
 const courses = [
   {
     id: 1,
@@ -71,7 +79,7 @@ const courses = [
   },
 ];
 
-const TestSelector = () => {
+const TestSelector = ({ onTestComplete }: TestSelectorProps) => {
   const [selectedTest, setSelectedTest] = useState<string | null>(null);
 
   const getLevelColor = (level: string) => {
@@ -90,11 +98,26 @@ const TestSelector = () => {
   const renderTest = () => {
     switch (selectedTest) {
       case "javascript":
-        return <JavaScriptTest onBack={() => setSelectedTest(null)} />;
+        return (
+          <JavaScriptTest
+            onComplete={onTestComplete}
+            onBack={() => setSelectedTest(null)}
+          />
+        );
       case "react":
-        return <ReactTest onBack={() => setSelectedTest(null)} />;
+        return (
+          <ReactTest
+            onComplete={onTestComplete}
+            onBack={() => setSelectedTest(null)}
+          />
+        );
       case "node":
-        return <NodeTest onBack={() => setSelectedTest(null)} />;
+        return (
+          <NodeTest
+            onComplete={onTestComplete}
+            onBack={() => setSelectedTest(null)}
+          />
+        );
       default:
         return null;
     }

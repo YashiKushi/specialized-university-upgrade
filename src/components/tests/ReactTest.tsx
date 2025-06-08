@@ -78,89 +78,72 @@ const testQuestions = [
 ];
 
 interface ReactTestProps {
+  onComplete: (testId: string, score: number, totalQuestions: number) => void;
   onBack: () => void;
 }
 
-const ReactTest = ({ onBack }: ReactTestProps) => {
+const ReactTest = ({ onComplete, onBack }: ReactTestProps) => {
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState<string>("");
   const [answers, setAnswers] = useState<number[]>([]);
-  const [showResults, setShowResults] = useState(false);
+  const [showResult, setShowResult] = useState(false);
+  const [score, setScore] = useState(0);
 
-  const handleNext = () => {
-    if (selectedAnswer) {
-      const newAnswers = [...answers, parseInt(selectedAnswer)];
-      setAnswers(newAnswers);
-
-      if (currentQuestion < testQuestions.length - 1) {
-        setCurrentQuestion(currentQuestion + 1);
-        setSelectedAnswer("");
-      } else {
-        setShowResults(true);
-      }
-    }
+  const handleAnswerSelect = (value: string) => {
+    setSelectedAnswer(value);
   };
 
-  const calculateScore = () => {
-    let correct = 0;
-    answers.forEach((answer, index) => {
-      if (answer === testQuestions[index].correct) {
-        correct++;
-      }
-    });
-    return Math.round((correct / testQuestions.length) * 100);
+  const handleNext = () => {
+    const answerIndex = parseInt(selectedAnswer);
+    const newAnswers = [...answers, answerIndex];
+    setAnswers(newAnswers);
+
+    if (currentQuestion < testQuestions.length - 1) {
+      setCurrentQuestion(currentQuestion + 1);
+      setSelectedAnswer("");
+    } else {
+      // Подсчитываем результат
+      const finalScore = newAnswers.reduce((acc, answer, index) => {
+        return acc + (answer === testQuestions[index].correct ? 1 : 0);
+      }, 0);
+      setScore(finalScore);
+      setShowResult(true);
+      onComplete("react", finalScore, testQuestions.length);
+    }
   };
 
   const resetTest = () => {
     setCurrentQuestion(0);
     setSelectedAnswer("");
     setAnswers([]);
-    setShowResults(false);
+    setShowResult(false);
+    setScore(0);
   };
 
-  if (showResults) {
-    const score = calculateScore();
+  if (showResult) {
     return (
-      <div className="max-w-2xl mx-auto">
-        <Card className="text-center">
-          <CardHeader>
-            <div className="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
-              <Icon name="Award" size={32} className="text-purple-600" />
-            </div>
-            <CardTitle className="text-2xl">Тест завершен!</CardTitle>
-            <CardDescription>
-              Ваш результат по React & TypeScript
-            </CardDescription>
-          </CardHeader>
-
-          <CardContent>
-            <div className="text-4xl font-bold text-purple-600 mb-4">
-              {score}%
-            </div>
-            <p className="text-gray-600 mb-6">
-              Правильных ответов:{" "}
-              {
-                answers.filter(
-                  (answer, index) => answer === testQuestions[index].correct,
-                ).length
-              }{" "}
-              из {testQuestions.length}
-            </p>
-
-            <div className="flex gap-4 justify-center">
-              <Button onClick={onBack} variant="outline">
-                Выбрать другой курс
-              </Button>
-              <Button
-                onClick={resetTest}
-                className="bg-purple-600 hover:bg-purple-700"
-              >
-                Пройти снова
-              </Button>
-            </div>
-          </CardContent>
-        </Card>
-      </div>
+      <Card className="max-w-2xl mx-auto">
+        <CardHeader className="text-center">
+          <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+            <Icon name="CheckCircle" size={32} className="text-green-600" />
+          </div>
+          <CardTitle className="text-2xl">Тест завершен!</CardTitle>
+          <CardDescription>
+            Вы ответили правильно на {score} из {testQuestions.length} вопросов
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="text-center space-y-4">
+          <div className="text-4xl font-bold text-purple-600">
+            {Math.round((score / testQuestions.length) * 100)}%
+          </div>
+          <div className="flex gap-4 justify-center">
+            <Button onClick={resetTest} variant="outline">
+              Пройти снова
+            </Button>
+            <Button onClick={onBack}>Вернуться к выбору тестов</Button>
+          </div>
+        </CardContent>
+      </Card>
     );
   }
 
@@ -195,7 +178,7 @@ const ReactTest = ({ onBack }: ReactTestProps) => {
 
             <RadioGroup
               value={selectedAnswer}
-              onValueChange={setSelectedAnswer}
+              onValueChange={handleAnswerSelect}
             >
               {testQuestions[currentQuestion].options.map((option, index) => (
                 <div
