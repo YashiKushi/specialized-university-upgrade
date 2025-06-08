@@ -9,7 +9,7 @@ const Header = () => {
           <div className="w-8 h-8 bg-gradient-to-r from-purple-500 to-indigo-600 rounded flex items-center justify-center">
             <Icon name="GraduationCap" size={20} className="text-white" />
           </div>
-          <h1 className="text-xl font-bold text-gray-900">СпецВуз</h1>
+          <h1 className="text-xl font-bold text-gray-900">СПЕЦВУЗ</h1>
         </div>
 
         <nav className="hidden md:flex space-x-6">
