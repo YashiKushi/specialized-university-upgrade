@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -8,6 +9,9 @@ import {
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import Icon from "@/components/ui/icon";
+import JavaScriptTest from "./tests/JavaScriptTest";
+import ReactTest from "./tests/ReactTest";
+import NodeTest from "./tests/NodeTest";
 
 const courses = [
   {
@@ -16,58 +20,60 @@ const courses = [
     description:
       "Углубленное изучение современного JavaScript, ES6+, асинхронность",
     level: "Продвинутый",
-    duration: "40 часов",
-    tests: 12,
+    questions: 7,
     icon: "Code2",
+    component: "javascript",
   },
   {
     id: 2,
     title: "React & TypeScript",
     description: "Разработка современных веб-приложений с React и TypeScript",
     level: "Средний",
-    duration: "35 часов",
-    tests: 10,
+    questions: 6,
     icon: "Component",
+    component: "react",
   },
   {
     id: 3,
     title: "Node.js Backend",
     description: "Серверная разработка на Node.js, Express, базы данных",
     level: "Средний",
-    duration: "45 часов",
-    tests: 15,
+    questions: 6,
     icon: "Server",
+    component: "node",
   },
   {
     id: 4,
     title: "Python для аналитики",
     description: "Анализ данных с Python, pandas, numpy, машинное обучение",
     level: "Начальный",
-    duration: "30 часов",
-    tests: 8,
+    questions: 6,
     icon: "BarChart3",
+    component: "python",
   },
   {
     id: 5,
     title: "DevOps практики",
     description: "Docker, Kubernetes, CI/CD, мониторинг и деплой приложений",
     level: "Продвинутый",
-    duration: "50 часов",
-    tests: 18,
+    questions: 6,
     icon: "Settings",
+    component: "devops",
   },
   {
     id: 6,
     title: "Алгоритмы и структуры данных",
     description: "Основы алгоритмов, сложность, оптимизация кода",
     level: "Средний",
-    duration: "25 часов",
-    tests: 20,
+    questions: 6,
     icon: "Network",
+    component: "algorithms",
   },
 ];
 
-const CourseGrid = () => {
+const TestSelector = () => {
+  const [selectedTest, setSelectedTest] = useState<string | null>(null);
+
   const getLevelColor = (level: string) => {
     switch (level) {
       case "Начальный":
@@ -81,15 +87,46 @@ const CourseGrid = () => {
     }
   };
 
+  const renderTest = () => {
+    switch (selectedTest) {
+      case "javascript":
+        return <JavaScriptTest onBack={() => setSelectedTest(null)} />;
+      case "react":
+        return <ReactTest onBack={() => setSelectedTest(null)} />;
+      case "node":
+        return <NodeTest onBack={() => setSelectedTest(null)} />;
+      default:
+        return null;
+    }
+  };
+
+  if (selectedTest) {
+    return (
+      <section id="tests" className="py-20 bg-gray-50">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">
+              Тестирование знаний
+            </h2>
+            <p className="text-xl text-gray-600">
+              Проверьте свои знания по выбранному курсу
+            </p>
+          </div>
+          {renderTest()}
+        </div>
+      </section>
+    );
+  }
+
   return (
-    <section id="courses" className="py-20 bg-white">
+    <section id="tests" className="py-20 bg-gray-50">
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
           <h2 className="text-3xl font-bold text-gray-900 mb-4">
-            Курсы повышения квалификации
+            Выберите тест
           </h2>
-          <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-            Выберите направление для развития ваших профессиональных навыков
+          <p className="text-xl text-gray-600">
+            Пройдите тестирование по интересующему курсу
           </p>
         </div>
 
@@ -119,25 +156,21 @@ const CourseGrid = () => {
               </CardHeader>
 
               <CardContent>
-                <div className="flex items-center justify-between text-sm text-gray-500 mb-4">
-                  <div className="flex items-center">
-                    <Icon name="Clock" size={16} className="mr-1" />
-                    {course.duration}
-                  </div>
-                  <div className="flex items-center">
-                    <Icon name="FileText" size={16} className="mr-1" />
-                    {course.tests} тестов
-                  </div>
+                <div className="flex items-center justify-center text-sm text-gray-500 mb-4">
+                  <Icon name="FileText" size={16} className="mr-1" />
+                  {course.questions} вопросов
                 </div>
 
                 <Button
                   className="w-full bg-purple-600 hover:bg-purple-700"
-                  onClick={() => {
-                    const testSection = document.getElementById("tests");
-                    testSection?.scrollIntoView({ behavior: "smooth" });
-                  }}
+                  onClick={() => setSelectedTest(course.component)}
+                  disabled={
+                    !["javascript", "react", "node"].includes(course.component)
+                  }
                 >
-                  Перейти к тестам
+                  {["javascript", "react", "node"].includes(course.component)
+                    ? "Начать тест"
+                    : "Скоро доступен"}
                 </Button>
               </CardContent>
             </Card>
@@ -148,4 +181,4 @@ const CourseGrid = () => {
   );
 };
 
-export default CourseGrid;
+export default TestSelector;
