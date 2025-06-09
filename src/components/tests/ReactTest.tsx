@@ -213,14 +213,26 @@ const ReactTest = ({ onComplete, onBack }: ReactTestProps) => {
             </Button>
 
             <Button
-              onClick={handleNext}
+              onClick={
+                currentQuestion === testQuestions.length - 1
+                  ? handleFinish
+                  : handleNext
+              }
               disabled={!selectedAnswer}
               className="bg-purple-600 hover:bg-purple-700"
             >
               {currentQuestion === testQuestions.length - 1
                 ? "Завершить"
                 : "Далее"}
-              <Icon name="ChevronRight" size={16} className="ml-1" />
+              <Icon
+                name={
+                  currentQuestion === testQuestions.length - 1
+                    ? "Check"
+                    : "ChevronRight"
+                }
+                size={16}
+                className="ml-1"
+              />
             </Button>
           </div>
         </CardContent>
