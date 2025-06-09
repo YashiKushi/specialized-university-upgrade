@@ -215,7 +215,7 @@ const ReactTest = ({ onComplete, onBack }: ReactTestProps) => {
             <Button
               onClick={
                 currentQuestion === testQuestions.length - 1
-                  ? handleFinish
+                  ? handleNext
                   : handleNext
               }
               disabled={!selectedAnswer}
